@@ -76,10 +76,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
-      - name: Setup Rust
-        uses: moonrepo/setup-rust@v1
-        with:
-          channel: '1.65.0'
+      # - name: Setup Rust
+      #   uses: moonrepo/setup-rust@v1
+      #   with:
+      #     channel: '1.65.0'
       - name: Install hyperfine and run benchmarks 🔧
         run: |
           HYPERFINE_VERSION="1.19.0"

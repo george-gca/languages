@@ -88,7 +88,7 @@ jobs:
           rm hyperfine_"$HYPERFINE_VERSION"_amd64.deb
           for dir in ./*/; do
             cd $dir
-            bash ../run.sh ${{ github.event.inputs.runs || 5 }}
+            bash ../run.sh ${{ github.event.inputs.runs || 1 }}
             cd ..
           done
       # commit all changed files back to the repository

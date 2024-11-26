@@ -1,0 +1,56 @@
+name: Deploy site
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/**"
+      - "**.sh"
+      - "!.github/**"
+      - "!README.md"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**/**"
+      - "**.sh"
+      - "!.github/**"
+      - "!README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-benchmark:
+    # available images: https://github.com/actions/runner-images#available-images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13' 
+      - name: Setup Ruby 💎
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Install hyperfine and run benchmarks 🔧
+        run: |
+          wget https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb
+          sudo dpkg -i hyperfine_1.19.0_amd64.deb
+          for dir in ./*/; do
+            cd $dir
+            bash ../run.sh
+            cd ..
+          done
+      # commit all changed files back to the repository
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Changed output tables

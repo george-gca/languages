@@ -27,20 +27,40 @@ jobs:
     # available images: https://github.com/actions/runner-images#available-images
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.3'
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu' # https://github.com/actions/setup-java?tab=readme-ov-file#supported-distributions
+          java-version: '21' # https://github.com/actions/setup-java?tab=readme-ov-file#supported-version-syntax
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Setup Python 🐍
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13' 
-      - name: Setup Ruby 💎
+          python-version: '3.13'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '3.5.3'
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
+      - name: Setup Rust
+        uses: actions-rust-lang/setup-rust-toolchain@v1
       - name: Install hyperfine and run benchmarks 🔧
         run: |
           wget https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb

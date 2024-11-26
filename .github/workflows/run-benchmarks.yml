@@ -20,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       runs:
-        default: 5
+        default: 5 # https://docs.github.com/en/actions/administering-github-actions/usage-limits-billing-and-administration#usage-limits
         description: "Number of benchmarking runs"
         required: false
 
@@ -34,14 +34,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # - name: Setup C
-      #   uses: aminya/setup-cpp@v1
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Setup C
+        uses: aminya/setup-cpp@v1
+        with:
+          compiler: gcc
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.23.3'
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: vx.x.x
       - name: Setup Java
         uses: actions/setup-java@v4
         with:

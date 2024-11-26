@@ -72,8 +72,10 @@ jobs:
           channel: '1.65.0'
       - name: Install hyperfine and run benchmarks 🔧
         run: |
-          wget https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb
-          sudo dpkg -i hyperfine_1.19.0_amd64.deb
+          HYPERFINE_VERSION="1.19.0"
+          wget https://github.com/sharkdp/hyperfine/releases/download/v"$HYPERFINE_VERSION"/hyperfine_"$HYPERFINE_VERSION"_amd64.deb
+          sudo dpkg -i hyperfine_"$HYPERFINE_VERSION"_amd64.deb
+          rm hyperfine_"$HYPERFINE_VERSION"_amd64.deb
           for dir in ./*/; do
             cd $dir
             bash ../run.sh ${{ github.event.inputs.runs || 5 }}

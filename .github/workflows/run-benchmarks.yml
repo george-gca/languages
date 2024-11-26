@@ -18,6 +18,11 @@ on:
       - "!.github/**"
       - "!README.md"
   workflow_dispatch:
+    inputs:
+      runs:
+        default: 5
+        description: "Number of benchmarking runs"
+        required: false
 
 permissions:
   contents: write
@@ -29,6 +34,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      # - name: Setup C
+      #   uses: aminya/setup-cpp@v1
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
       - name: Setup Go
@@ -60,14 +67,16 @@ jobs:
         with:
           ruby-version: '3.3'
       - name: Setup Rust
-        uses: actions-rust-lang/setup-rust-toolchain@v1
+        uses: moonrepo/setup-rust@v1
+        with:
+          channel: '1.65.0'
       - name: Install hyperfine and run benchmarks 🔧
         run: |
           wget https://github.com/sharkdp/hyperfine/releases/download/v1.19.0/hyperfine_1.19.0_amd64.deb
           sudo dpkg -i hyperfine_1.19.0_amd64.deb
           for dir in ./*/; do
             cd $dir
-            bash ../run.sh
+            bash ../run.sh ${{ github.event.inputs.runs || 5 }}
             cd ..
           done
       # commit all changed files back to the repository

@@ -6,7 +6,8 @@ fi
 
 if hash hyperfine 2>/dev/null; then
     echo "Running $n_runs times the $(basename $PWD) benchmark"
-    hyperfine --setup 'bash ../compile.sh' --cleanup 'bash ../clean.sh' --runs $n_runs --export-markdown "$(basename $PWD).md" \
+    hyperfine \
+        --setup 'bash ../compile.sh' --cleanup 'bash ../clean.sh' --runs $n_runs --show-output --export-markdown "$(basename $PWD).md" \
         'bun ./js/code.js 40' \
         './c/code 40' \
         './dart/code 40' \
